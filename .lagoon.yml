@@ -19,10 +19,12 @@ tasks:
     #         fi
     #     service: cli
     #     shell: bash
-    - run:
-        name: drush cim
-        command: drush -y cim
-        service: cli
+
+    # No need to import the configuration
+    #- run:
+    #    name: drush cim
+    #    command: drush -y cim
+    #    service: cli
     - run:
         name: drush updb
         command: drush -y updb
