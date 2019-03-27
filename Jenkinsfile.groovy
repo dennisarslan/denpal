@@ -7,6 +7,9 @@ pipeline {
     }
     stages {
         stage('Build Image: cli') {
+            when {
+                cli: true
+            }
             steps {
                 sh """
 				docker build -t dennisarslan/denpal-cli -f Dockerfile.cli .
@@ -15,6 +18,9 @@ pipeline {
             }
         }
         stage('Build Image: nginx') {
+            when {
+                nginx: true
+            }
             steps {
                 sh """
 				docker build -t dennisarslan/denpal-nginx -f Dockerfile.nginx .
@@ -23,6 +29,9 @@ pipeline {
             }
         }
         stage('Build Image: php') {
+            when {
+                php: true
+            }
             steps {
                 sh """
 				docker build -t dennisarslan/denpal-php -f Dockerfile.php .
