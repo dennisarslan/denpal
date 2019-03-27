@@ -6,14 +6,22 @@ pipeline {
         booleanParam(name: 'php', defaultValue: true, description: 'Should I rebuild the php Docker image?')
     }
 		environment {
-   		docker_credentials = credentials('docker-login')
+   		DOCKER_CREDS = credentials('dockerlogin')
 		}
     stages {
+    	  stage('Git clone') {
+    	  	/*
+    	  	This is needed for local development, because Jenkins uses locally pasted pipeline code in a textarea box and doesn't know where the Git repo is.
+    	  	This also means we have no multibranch, but that's no problem for local development.
+    	  	*/
+    	  	steps {
+    	  		    git url: 'https://github.com/dennisarslan/denpal'
+    	  	}
+    	  }
         stage('Docker login') {
             steps {
                 sh """
-                env
-                docker login --username $username --password $password
+                docker login --username $DOCKER_CREDS_USR --password $DOCKER_CREDS_PSW
                 """
             }
         }

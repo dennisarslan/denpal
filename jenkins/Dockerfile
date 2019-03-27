@@ -33,6 +33,9 @@ RUN rm -rf /var/lib/apt/lists/*
 RUN gem install serverspec
 RUN pip install ansible
 
+# Jenkins user needs to be part of the root group to build Docker containers
+RUN usermod -aG root jenkins
+
 # Run Jenkins with limited permissions
 USER jenkins
 
