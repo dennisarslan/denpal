@@ -5,7 +5,18 @@ pipeline {
         booleanParam(name: 'nginx', defaultValue: true, description: 'Should I rebuild the nginx Docker image?')
         booleanParam(name: 'php', defaultValue: true, description: 'Should I rebuild the php Docker image?')
     }
+		environment {
+   		docker_credentials = credentials('docker-login')
+		}
     stages {
+        stage('Docker login') {
+            steps {
+                sh """
+                env
+                docker login --username $username --password $password
+                """
+            }
+        }
         stage('Build Image: cli') {
             when { expression { return params.cli } }
             steps {
