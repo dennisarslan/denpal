@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Build Image: cli') {
             when {
-                cli: true
+                expression { cli: true }
             }
             steps {
                 sh """
@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Build Image: nginx') {
             when {
-                nginx: true
+                expression { nginx: true }
             }
             steps {
                 sh """
@@ -30,7 +30,7 @@ pipeline {
         }
         stage('Build Image: php') {
             when {
-                php: true
+                expression { php: true }
             }
             steps {
                 sh """
