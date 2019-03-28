@@ -28,6 +28,13 @@ pipeline {
                 """
             }
         }
+        stage('Ahoy') {
+            steps {
+                sh """
+                ./ahoy.sh
+                """
+            }
+        }
         stage('Build Image: cli') {
             when { expression { return params.cli } }
             steps {
@@ -59,7 +66,7 @@ pipeline {
     post {
         always {
         		script {
-          		currentBuild.setDescription("CLI: ${params.cli} NGINX: ${params.nginx} - PHP: ${params.php}")
+          		currentBuild.setDescription("CLI: ${params.cli} - NGINX: ${params.nginx} - PHP: ${params.php}")
            	}
             echo 'I will always say Hello again!'
         }

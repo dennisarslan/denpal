@@ -30,11 +30,13 @@ tasks:
         command: drush -y updb
         service: cli
     - run:
+        name: drush sql-sync
+        command: drush sql-sync @master @self
+        service: cli
+    - run:
         name: drush cr
         command: drush -y cr
         service: cli
-
-
 
 environments:
   master:
