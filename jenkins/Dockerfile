@@ -27,10 +27,14 @@ RUN add-apt-repository \
 
 RUN apt-get update
 RUN apt-get install -y docker-ce docker-ce-cli containerd.io
+
+RUN curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+RUN chmod +x /usr/local/bin/docker-compose
+
 RUN rm -rf /var/lib/apt/lists/*
 
 # Installing some nice tools
-RUN gem install serverspec
+RUN gem install serverspec pygmy
 RUN pip install ansible
 
 # Jenkins user needs to be part of the root group to build Docker containers
