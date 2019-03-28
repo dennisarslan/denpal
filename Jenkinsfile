@@ -59,7 +59,7 @@ pipeline {
     post {
         always {
         		script {
-          		currentBuild.setDescription("CLI Image: ${params.cli}, NGINX Image: ${params.nginx}, PHP Image: ${params.php}")
+          		currentBuild.setDescription("CLI: ${params.cli} NGINX: ${params.nginx} - PHP: ${params.php}")
            	}
             echo 'I will always say Hello again!'
         }
