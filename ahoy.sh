@@ -4,4 +4,6 @@ docker-compose up -d --build "$@"
 #docker-compose exec test dockerize -wait tcp://mariadb:3306 -timeout 1m
 #docker-compose exec -T test drush si -y govcms --site-name="Welcome to GovCMS" "$@"
 docker-compose exec -T cli drush status
-docker-compose exec -T cli drush -y sql-sync @master @self
+echo "status"
+docker-compose ps -a
+#docker-compose exec -T cli drush -y sql-sync @master @self
