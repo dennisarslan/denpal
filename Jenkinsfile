@@ -18,7 +18,7 @@ pipeline {
     	  	This also means we have no multibranch, but that's no problem for local development.
     	  	*/
     	  	steps {
-    	  		    git url: 'https://github.com/dennisarslan/denpal'
+    	  		    git url: 'https://github.com/dennisarslan/denpal', branch: 'feature/Jenkinsfile'
     	  	}
     	  }
         stage('Docker login') {
