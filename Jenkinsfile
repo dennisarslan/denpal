@@ -31,6 +31,7 @@ pipeline {
         stage('Ahoy') {
             steps {
                 sh """
+                ls -al
                 ./ahoy.sh
                 """
             }
