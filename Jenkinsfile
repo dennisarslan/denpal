@@ -63,7 +63,7 @@ pipeline {
                 """
             }
         }
-        stage('Verification tests')
+        stage('Verification tests') {
             steps {
                 sh """
                 docker-compose exec -T cli drush status
@@ -75,6 +75,7 @@ pipeline {
                 fi
                 """
             }
+        }
     }
     post {
         always {
