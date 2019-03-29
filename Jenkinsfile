@@ -67,7 +67,7 @@ pipeline {
             steps {
                 sh """
                 docker-compose exec -T cli drush status
-                curl http://denpal.docker.amazee.io
+                echo curl http://denpal.docker.amazee.io
                 """
                 /*
                 if [ $? -eq 0 ]; then
