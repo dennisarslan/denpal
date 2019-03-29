@@ -28,7 +28,7 @@ pipeline {
                 """
             }
         }
-        stage('Ahoy') {
+        stage('Docker-compose') {
             steps {
                 sh """
                 ls -al
@@ -63,6 +63,18 @@ pipeline {
                 """
             }
         }
+        stage('Verification tests')
+            steps {
+                sh """
+                docker-compose exec -T cli drush status
+                curl http://denpal.docker.amazee.io
+                if [ $? -eq 0 ]; then
+                    echo "OK!"
+                else
+                    echo "FAIL"
+                fi
+                """
+            }
     }
     post {
         always {
