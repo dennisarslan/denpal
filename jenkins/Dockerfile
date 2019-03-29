@@ -40,6 +40,9 @@ RUN pip install ansible
 # Jenkins user needs to be part of the root group to build Docker containers
 RUN usermod -aG root jenkins
 
+#
+RUN ln -s /tmp/amazeeio_ssh-agent/socket /tmp/ssh-agent
+
 # Run Jenkins with limited permissions
 USER jenkins
 
