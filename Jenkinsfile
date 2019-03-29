@@ -68,12 +68,14 @@ pipeline {
                 sh """
                 docker-compose exec -T cli drush status
                 curl http://denpal.docker.amazee.io
+                """
+                /*
                 if [ $? -eq 0 ]; then
                     echo "OK!"
                 else
                     echo "FAIL"
                 fi
-                """
+                */
             }
         }
     }
