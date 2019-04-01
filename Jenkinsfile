@@ -25,8 +25,11 @@ pipeline {
         stage('Docker login') {
             steps {
                 sh """
-                docker login --username amazeeiojenkins --password $DOCKER_CREDS_PSW
+                echo docker
                 """
+/*
+                docker login --username amazeeiojenkins --password $DOCKER_CREDS_PSW
+*/
             }
         }
         stage('Install dependencies') {
