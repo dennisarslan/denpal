@@ -3,7 +3,7 @@ version: '2.3'
 x-lagoon-project:
   # Lagoon project name (leave `&lagoon-project` when you edit this)
   &lagoon-project denpal
-  &cli-image denpal_cli
+  &cli-image denpal
 
 x-volumes:
   &default-volumes
@@ -33,7 +33,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.cli
-    image: denpal_cli
+    image: denpal
     labels:
       # Lagoon Labels
       lagoon.type: cli-persistent
@@ -41,8 +41,8 @@ services:
       lagoon.persistent: /app/web/sites/default/files/ # location where the persistent storage should be mounted
     << : *default-volumes # loads the defined volumes from the top
     user: root
-    # volumes_from: # mount the ssh-agent from the pygmy or cachalot ssh-agent
-    #  - container:amazeeio-ssh-agent
+    volumes_from: # mount the ssh-agent from the pygmy or cachalot ssh-agent
+      - container:amazeeio-ssh-agent
     environment:
       << : *default-environment # loads the defined environment variables from the top
 
@@ -51,7 +51,7 @@ services:
       context: .
       dockerfile: Dockerfile.nginx
       args:
-        CLI_IMAGE: denpal_cli
+        CLI_IMAGE: denpal
     labels:
       lagoon.type: nginx-php-persistent
       lagoon.persistent: /app/web/sites/default/files/ # define where the persistent storage should be mounted too
@@ -71,7 +71,7 @@ services:
       context: .
       dockerfile: Dockerfile.php
       args:
-        CLI_IMAGE: denpal_cli
+        CLI_IMAGE: denpal
     labels:
       lagoon.type: nginx-php-persistent
       lagoon.name: nginx # we want this service be part of the nginx pod in Lagoon

@@ -49,7 +49,9 @@ pipeline {
         sh '''
         docker-compose config -q
         docker network prune -f && docker network inspect amazeeio-network >/dev/null || docker network create amazeeio-network
-        docker-compose up -d --build "$@"
+        COMPOSE_PROJECT_NAME=denpal docker-compose up -d --build "$@"
+        COMPOSE_PROJECT_NAME=denpal docker-compose down
+        docker network list
         '''
       }
     }
@@ -83,11 +85,11 @@ pipeline {
     stage('Docker push images') {
       steps {
         sh """
-        docker tag denpal_cli:latest amazeeiodevelopment/denpal_cli:latest
-        docker push amazeeiodevelopment/denpal_cli:latest
-        docker tag denpal_cli:latest amazeeiodevelopment/denpal_nginx:latest
+        docker tag denpal:latest amazeeiodevelopment/denpal:latest
+        docker push amazeeiodevelopment/denpal:latest
+        docker tag denpal_nginx:latest amazeeiodevelopment/denpal_nginx:latest
         docker push amazeeiodevelopment/denpal_nginx:latest
-        docker tag denpal_cli:latest amazeeiodevelopment/denpal_php:latest
+        docker tag denpal_php:latest amazeeiodevelopment/denpal_php:latest
         docker push amazeeiodevelopment/denpal_php:latest
         """
       }
@@ -95,7 +97,7 @@ pipeline {
     stage('Verification tests') {
       steps {
         sh """
-        docker images
+        docker images | head
         docker-compose ps
         docker-compose exec -T cli drush status
         echo curl http://denpal.docker.amazee.io
