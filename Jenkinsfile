@@ -30,7 +30,7 @@ pipeline {
       }
     }
     stage('Install dependencies') {
-      when { expression { return params.dependencies } } }
+      when { expression { return params.dependencies } }
       steps {
         sh """
         echo disabled
@@ -61,7 +61,7 @@ pipeline {
         docker build -t dennisarslan/denpal-cli -f Dockerfile.cli .
         docker push dennisarslan/denpal-cli
         """
-        }
+      }
     }
     stage('Build Image: nginx') {
       when { expression { return params.nginx } }
