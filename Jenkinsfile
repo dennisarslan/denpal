@@ -25,9 +25,6 @@ pipeline {
         stage('Docker login') {
             steps {
                 sh """
-                echo $DOCKER_CREDS >> bla
-                cat bla
-                rm bla
                 docker login --username amazeeiojenkins --password $DOCKER_CREDS
                 """
             }
@@ -36,6 +33,7 @@ pipeline {
             steps {
                 sh """
                 id
+                docker ps
                 env
                 sudo ls
                 """
