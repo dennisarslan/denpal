@@ -98,6 +98,7 @@ pipeline {
     stage('Verification tests') {
       steps {
         sh """
+        docker ps | head
         docker images | head
         docker-compose ps
         docker-compose exec -T cli drush status
