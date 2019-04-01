@@ -80,6 +80,18 @@ pipeline {
         """
       }
     }
+    stage('Docker push images') {
+      steps {
+        sh """
+        docker tag denpal_cli:latest amazeeiodevelopment/denpal_cli:latest
+        docker push amazeeiodevelopment/denpal_cli:latest
+        docker tag denpal_cli:latest amazeeiodevelopment/denpal_nginx:latest
+        docker push amazeeiodevelopment/denpal_nginx:latest
+        docker tag denpal_cli:latest amazeeiodevelopment/denpal_php:latest
+        docker push amazeeiodevelopment/denpal_php:latest
+        """
+      }
+    }
     stage('Verification tests') {
       steps {
         sh """

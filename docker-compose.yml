@@ -3,6 +3,7 @@ version: '2.3'
 x-lagoon-project:
   # Lagoon project name (leave `&lagoon-project` when you edit this)
   &lagoon-project denpal
+  &cli-image denpal_cli
 
 x-volumes:
   &default-volumes
@@ -32,7 +33,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.cli
-    image: *lagoon-project # this image will be reused as `CLI_IMAGE` in subsequent Docker builds
+    image: denpal_cli
     labels:
       # Lagoon Labels
       lagoon.type: cli-persistent
@@ -50,7 +51,7 @@ services:
       context: .
       dockerfile: Dockerfile.nginx
       args:
-        CLI_IMAGE: *lagoon-project # Inject the name of the cli image
+        CLI_IMAGE: denpal_cli
     labels:
       lagoon.type: nginx-php-persistent
       lagoon.persistent: /app/web/sites/default/files/ # define where the persistent storage should be mounted too
@@ -70,7 +71,7 @@ services:
       context: .
       dockerfile: Dockerfile.php
       args:
-        CLI_IMAGE: *lagoon-project
+        CLI_IMAGE: denpal_cli
     labels:
       lagoon.type: nginx-php-persistent
       lagoon.name: nginx # we want this service be part of the nginx pod in Lagoon
