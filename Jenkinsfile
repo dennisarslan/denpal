@@ -9,7 +9,7 @@ pipeline {
         booleanParam(name: 'php', defaultValue: false, description: 'Should I rebuild the php Docker image?')
     }
 		environment {
-   		DOCKER_CREDS = credentials('dockerlogin')
+   		DOCKER_CREDS = credentials('amazeeiojenkins-dockerhub-password')
 		}
     stages {
     	  stage('Git clone') {
