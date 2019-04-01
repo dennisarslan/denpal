@@ -83,6 +83,7 @@ pipeline {
     stage('Verification tests') {
       steps {
         sh """
+        docker images
         docker-compose ps
         docker-compose exec -T cli drush status
         echo curl http://denpal.docker.amazee.io
