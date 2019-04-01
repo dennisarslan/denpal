@@ -30,11 +30,13 @@ pipeline {
             }
         }
         stage('Install dependencies') {
-
             steps {
                 sh """
                 id
                 env
+                sudo ls
+                """
+/*
     	          apt-get update
 								apt-get install -y openssh-server net-tools inetutils-ping python-pip rubygems
 								apt-get install -y \
@@ -57,6 +59,7 @@ pipeline {
 								chmod +x /usr/local/bin/docker-compose
 								gem install serverspec pygmy
                 """
+            */
             }
         }
         stage('Docker-compose') {
