@@ -41,7 +41,6 @@ pipeline {
       steps {
         sh """
         ls -al
-        docker-compose ps
         """
       }
     }
