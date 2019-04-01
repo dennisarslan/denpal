@@ -4,6 +4,7 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
     }
     parameters {
+        booleanParam(name: 'dependencies', defaultValue: false, description: 'Should I install the Docker-in-Docker dependencies?')
         booleanParam(name: 'cli', defaultValue: false, description: 'Should I rebuild the cli Docker image?')
         booleanParam(name: 'nginx', defaultValue: false, description: 'Should I rebuild the nginx Docker image?')
         booleanParam(name: 'php', defaultValue: false, description: 'Should I rebuild the php Docker image?')
@@ -25,6 +26,36 @@ pipeline {
             steps {
                 sh """
                 docker login --username amazeeiojenkins --password $DOCKER_CREDS_PSW
+                """
+            }
+        }
+        stage('Install dependencies') {
+
+            steps {
+                sh """
+                id
+                env
+    	          apt-get update
+								apt-get install -y openssh-server net-tools inetutils-ping python-pip rubygems
+								apt-get install -y \
+								    apt-transport-https \
+								    ca-certificates \
+								    curl \
+								    gnupg2 \
+								    software-properties-common
+
+								curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+
+								add-apt-repository \
+								   "deb [arch=amd64] https://download.docker.com/linux/debian \
+								   $(lsb_release -cs) \
+								   stable"
+
+								apt-get update
+								apt-get install -y docker-ce docker-ce-cli containerd.io
+								curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+								chmod +x /usr/local/bin/docker-compose
+								gem install serverspec pygmy
                 """
             }
         }
