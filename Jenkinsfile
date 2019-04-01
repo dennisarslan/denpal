@@ -47,11 +47,11 @@ pipeline {
     }
     stage('Docker-compose') {
       steps {
-        sh """
+        sh '''
         docker-compose config -q
         docker network prune -f && docker network inspect amazeeio-network >/dev/null || docker network create amazeeio-network
         docker-compose up -d --build "$@"
-        """
+        '''
       }
     }
     stage('Build Image: cli') {
