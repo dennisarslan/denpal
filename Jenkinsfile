@@ -24,7 +24,7 @@ pipeline {
         stage('Docker login') {
             steps {
                 sh """
-                docker login --username $DOCKER_CREDS_USR --password $DOCKER_CREDS_PSW
+                docker login --username amazeeiojenkins --password $DOCKER_CREDS_PSW
                 """
             }
         }
