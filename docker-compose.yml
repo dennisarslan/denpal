@@ -40,8 +40,8 @@ services:
       lagoon.persistent: /app/web/sites/default/files/ # location where the persistent storage should be mounted
     << : *default-volumes # loads the defined volumes from the top
     user: root
-    volumes_from: # mount the ssh-agent from the pygmy or cachalot ssh-agent
-      - container:amazeeio-ssh-agent
+    # volumes_from: # mount the ssh-agent from the pygmy or cachalot ssh-agent
+    #  - container:amazeeio-ssh-agent
     environment:
       << : *default-environment # loads the defined environment variables from the top
 
