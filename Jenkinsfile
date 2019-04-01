@@ -30,14 +30,9 @@ pipeline {
             }
         }
         stage('Install dependencies') {
+			when { expression { return params.dependencies } } }
             steps {
                 sh """
-                id
-                docker ps
-                env
-                sudo ls
-                """
-/*
     	          apt-get update
 								apt-get install -y openssh-server net-tools inetutils-ping python-pip rubygems
 								apt-get install -y \
@@ -60,14 +55,22 @@ pipeline {
 								chmod +x /usr/local/bin/docker-compose
 								gem install serverspec pygmy
                 """
-            */
             }
         }
+		stage('Pre-build tests') {
+			steps {
+				sh """
+				ls -al
+				docker-compose ps
+				"""
+			}
+		}
         stage('Docker-compose') {
             steps {
                 sh """
-                ls -al
-                ./ahoy.sh
+				docker-compose config -q
+				docker network prune -f && docker network inspect amazeeio-network >/dev/null || docker network create amazeeio-network
+				docker-compose up -d --build "$@"
                 """
             }
         }
