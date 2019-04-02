@@ -118,6 +118,8 @@
     stage('Tagging') {
       steps {
         sh """
+        git config --global user.name "Dennis Arslan"
+        git config --global user.email "dennis.arslan@amazee.com"
          ./archive/tag_git_repo.sh
         """
       }
