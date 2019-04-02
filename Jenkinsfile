@@ -33,7 +33,6 @@
         ls -al
         ls -la .ssh
         ls -al ~/.ssh
-        dockerx
         docker login --username amazeeiojenkins --password $DOCKER_CREDS
         """
       }
@@ -126,11 +125,12 @@
     }
     stage('Tagging') {
       steps {
-        sh """
-        git config --global user.name "Dennis Arslan"
-        git config --global user.email "dennis.arslan@amazee.com"
-         ./archive/tag_git_repo.sh
-        """
+        withCredentials([sshUserPrivateKey(credentialsId: 'denpal')]) {
+          sh '''
+          git config --global user.name "Dennis Arslan"
+          git config --global user.email "dennis.arslan@amazee.com"
+          ./archive/tag_git_repo.sh
+          '''
       }
 
     }
