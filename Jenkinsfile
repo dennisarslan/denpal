@@ -91,6 +91,8 @@
         docker-compose ps
         docker logs denpal_cli_1
         docker logs denpal_mariadb_1
+        docker inspect denpal_php_1  | grep -i DB_
+        docker exec -ti denpal_cli_1 mysql -hmariadb -udrupal -pdrupal
         docker-compose logs
         curl -v http://localhost:10000/
         curl -v http://localhost:10001/
