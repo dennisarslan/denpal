@@ -19,7 +19,7 @@
       This also means we have no multibranch, but that's no problem for local development.
       */
       steps {
-        git branch: 'master',
+        git branch: 'feature/Jenkinsfile',
           credentialsId: 'denpal',
           url: 'git@github.com:dennisarslan/denpal.git'
         /*
