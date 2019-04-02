@@ -122,7 +122,8 @@
     }
     stage('Tagging') {
       steps {
-        withCredentials([sshUserPrivateKey(credentialsId: 'denpal', keyFileVariable: 'private_key', passphraseVariable: '', usernameVariable: 'git')]){
+        /* withCredentials([sshUserPrivateKey(credentialsId: 'denpal', keyFileVariable: 'private_key', passphraseVariable: '', usernameVariable: 'git')]){ */
+        sshagent (credentials: ['denpal']) {
           sh '''
           git config --global user.name "Dennis Arslan"
           git config --global user.email "dennis.arslan@amazee.com"
