@@ -101,6 +101,8 @@ pipeline {
         docker ps | head
         docker images | head
         docker-compose ps
+        curl http://localhost:10000/
+        curl http://localhost:10001/
         docker-compose exec -T cli drush status
         echo curl http://denpal.docker.amazee.io
         """
