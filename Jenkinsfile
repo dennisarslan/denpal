@@ -21,7 +21,7 @@
       steps {
         git branch: 'master',
           credentialsId: 'denpal',
-          url: 'ssh://git@github.com:dennisarslan/denpal.git'
+          url: 'git@github.com:dennisarslan/denpal.git'
         /*
         git url: 'github.com/dennisarslan/denpal', branch: 'feature/Jenkinsfile'
         */
