@@ -131,8 +131,8 @@
           git config --global user.email "dennis.arslan@amazee.com"
           ./archive/tag_git_repo.sh
           '''
+        }
       }
-
     }
     stage('Docker push images') {
       steps {
