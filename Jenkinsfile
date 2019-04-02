@@ -88,10 +88,10 @@
         """
       }
     }
-    stage('Waiting 30 seconds') {
+    stage('Waiting 15 seconds') {
       steps {
         sh """
-        sleep 30s
+        sleep 15s
         """
       }
     }
