@@ -34,7 +34,7 @@
         """
       }
     }
-    stage('Test Git')
+    stage('Test Git') {
       steps {
         withCredentials([sshUserPrivateKey(credentialsId: 'denpal', keyFileVariable: 'SSH_KEY')]) {
           sh '''
