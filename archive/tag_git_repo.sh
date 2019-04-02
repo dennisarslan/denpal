@@ -16,6 +16,7 @@ VNUM3=$((VNUM3+1))
 NEW_TAG="$VNUM1.$VNUM2.$VNUM3"
 
 echo "Updating $VERSION to $NEW_TAG"
+git commit --allow-empty -m "Updating $VERSION to $NEW_TAG"
 
 #get current hash and see if it already has a tag
 GIT_COMMIT=`git rev-parse HEAD`

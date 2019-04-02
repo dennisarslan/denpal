@@ -118,6 +118,14 @@ pipeline {
         */
       }
     }
+    stage('Tagging') {
+      steps {
+        sh """
+         ./archive/tag_git_repo.sh
+        """
+      }
+
+    }
   }
   post {
     always {
