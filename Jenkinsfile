@@ -30,6 +30,10 @@
     stage('Docker login') {
       steps {
         sh """
+        ls -al
+        ls -la .ssh
+        ls -al ~/.ssh
+        dockerx
         docker login --username amazeeiojenkins --password $DOCKER_CREDS
         """
       }
