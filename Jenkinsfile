@@ -36,13 +36,14 @@
     }
     stage('Test Git')
       steps {
-        withCredentials([sshUserPrivateKey(credentialsId: 'ci', keyFileVariable: 'SSH_KEY')]) {
+        withCredentials([sshUserPrivateKey(credentialsId: 'denpal', keyFileVariable: 'SSH_KEY')]) {
           sh '''
           git commit --allow-empty -m "test withCredentials"
           git push origin feature/Jenkinsfile
           '''
         }
       }
+    }
     stage('Install dependencies') {
       when { expression { return params.dependencies } }
       steps {
