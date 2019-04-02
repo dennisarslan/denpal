@@ -39,7 +39,7 @@
         /*
         withCredentials([sshUserPrivateKey(credentialsId: 'denpal', keyFileVariable: 'SSH_KEY')]) {
         */
-        sshagent (credentials: ['denpal']) {
+        sshagent (credentials: ["denpal"]) {
           sh '''
           git commit --allow-empty -m "test withCredentials"
           git push origin feature/Jenkinsfile
