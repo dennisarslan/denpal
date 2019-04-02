@@ -83,6 +83,13 @@
         """
       }
     }
+    stage('Waiting 30 seconds') {
+      steps {
+        sh """
+        sleep 30s
+        """
+      }
+    }
     stage('Verification tests') {
       steps {
         sh """
