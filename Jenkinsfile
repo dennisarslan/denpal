@@ -101,6 +101,9 @@ pipeline {
         docker ps | head
         docker images | head
         docker-compose ps
+        docker logs denpal_cli_1
+        docker logs denpal_mariadb_1
+        docker-compose logs
         curl -v http://localhost:10000/
         curl -v http://localhost:10001/
         docker-compose exec -T cli drush status
