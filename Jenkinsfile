@@ -18,8 +18,13 @@
       This is needed for local development, because Jenkins uses locally pasted pipeline code in a textarea box and doesn't know where the Git repo is.
       This also means we have no multibranch, but that's no problem for local development.
       */
-      steps {
-        git url: 'https://github.com/dennisarslan/denpal', branch: 'feature/Jenkinsfile'
+      steps {i
+        git branch: 'master',
+          credentialsId: 'denpal',
+          url: 'ssh://git@github.com:dennisarslan/denpal.git'
+        /*
+        git url: 'github.com/dennisarslan/denpal', branch: 'feature/Jenkinsfile'
+        */
       }
     }
     stage('Docker login') {
