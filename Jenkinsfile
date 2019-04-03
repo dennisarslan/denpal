@@ -40,7 +40,7 @@
         withCredentials([sshUserPrivateKey(credentialsId: 'denpal', keyFileVariable: 'KEY_FILE')]) {
           sh '''
           eval `ssh-agent -s`
-          ssh-add ${KEY_FILE}"
+          ssh-add ${KEY_FILE}
           ssh-add -L
           git commit --allow-empty -m "test withCredentials"
           git push origin feature/Jenkinsfile
