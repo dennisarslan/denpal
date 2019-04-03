@@ -36,9 +36,12 @@
     }
     stage('Test Git') {
       steps {
-        sshagent(credentials : ['denpal']) {
-            sh 'git commit --allow-empty -m "test withCredentials"'
-            sh 'git push origin feature/Jenkinsfile'
+        /* sshagent(credentials : ['denpal']) { */
+        withCredentials([sshUserPrivateKey(credentialsId: 'denpal', keyFileVariable: 'KEY_FILE')]) {
+          sh "eval `ssh-agent -s` && ssh-add ${KEY_FILE}"
+          sh 'ssh-add -L'
+          sh 'git commit --allow-empty -m "test withCredentials"'
+          sh 'git push origin feature/Jenkinsfile'
         }
 
         sshagent (credentials: ["denpal"]) {
