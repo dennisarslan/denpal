@@ -37,9 +37,9 @@
       }
     }
     stage('Test Git') {
+      when { expression { return params.testgit } }
       steps {
         /* sshagent(credentials : ['denpal']) { */
-        when { expression { return params.testgit } }
         withCredentials([sshUserPrivateKey(credentialsId: 'denpal', keyFileVariable: 'KEY_FILE')]) {
           sh '''
           eval `ssh-agent -s`
@@ -118,8 +118,8 @@
       }
     }
     stage('Debug Info') {
+      when { expression { return params.debug } }
       steps {
-        when { expression { return params.debug } }
         sh """
         docker-compose ps
         docker network list
