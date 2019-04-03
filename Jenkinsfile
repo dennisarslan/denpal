@@ -13,6 +13,7 @@
   }
   environment {
     DOCKER_CREDS = credentials('amazeeiojenkins-dockerhub-password')
+    COMPOSE_PROJECT_NAME = 'denpal'
   }
   stages {
     stage('Git clone') {
