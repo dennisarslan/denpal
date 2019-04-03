@@ -5,6 +5,8 @@
   }
   parameters {
     booleanParam(name: 'dependencies', defaultValue: false, description: 'Should I install the Docker-in-Docker dependencies?')
+    booleanParam(name: 'debug', defaultValue: false, description: 'Should I enable debug mode for verbose logging?')
+    booleanParam(name: 'testgit', defaultValue: false, description: 'Should I test the SSH private key for pushing into Git?')
     booleanParam(name: 'cli', defaultValue: false, description: 'Should I rebuild the cli Docker image?')
     booleanParam(name: 'nginx', defaultValue: false, description: 'Should I rebuild the nginx Docker image?')
     booleanParam(name: 'php', defaultValue: false, description: 'Should I rebuild the php Docker image?')
@@ -37,6 +39,7 @@
     stage('Test Git') {
       steps {
         /* sshagent(credentials : ['denpal']) { */
+        when { expression { return params.testgit } }
         withCredentials([sshUserPrivateKey(credentialsId: 'denpal', keyFileVariable: 'KEY_FILE')]) {
           sh '''
           eval `ssh-agent -s`
@@ -77,8 +80,6 @@
         docker network prune -f && docker network inspect amazeeio-network >/dev/null || docker network create amazeeio-network
         COMPOSE_PROJECT_NAME=denpal docker-compose down
         COMPOSE_PROJECT_NAME=denpal docker-compose up -d --build "$@"
-        docker-compose ps
-        docker network list
         '''
       }
     }
@@ -116,9 +117,12 @@
         """
       }
     }
-    stage('Verification tests') {
+    stage('Debug Info') {
       steps {
+        when { expression { return params.debug } }
         sh """
+        docker-compose ps
+        docker network list
         docker ps | head
         docker images | head
         docker-compose ps
@@ -127,6 +131,12 @@
         docker inspect denpal_php_1  | grep -i DB_
         docker exec denpal_cli_1 mysql -hmariadb -udrupal -pdrupal
         docker-compose logs
+        """
+      }
+    }
+    stage('Verification tests') {
+      steps {
+        sh """
         curl -v http://localhost:10000/
         curl -v http://localhost:10001/
         docker-compose exec -T cli drush status
@@ -143,10 +153,12 @@
     }
     stage('Tagging') {
       steps {
-        /* withCredentials([sshUserPrivateKey(credentialsId: 'denpal', keyFileVariable: 'private_key', passphraseVariable: '', usernameVariable: 'git')]){ */
-        sshagent (credentials: ['denpal']) {
+        withCredentials([sshUserPrivateKey(credentialsId: 'denpal', keyFileVariable: 'KEY_FILE')]) {
           sh '''
-          git config --global user.name "Dennis Arslan"
+          eval `ssh-agent -s`
+          ssh-add ${KEY_FILE}
+          ssh-add -L
+          git config --global user.name "Dennis Arslan (Jenkins)"
           git config --global user.email "dennis.arslan@amazee.com"
           ./archive/tag_git_repo.sh
           '''
