@@ -4,7 +4,8 @@
 git fetch --tags
 
 #get highest tag number
-VERSION=`git describe --abbrev=0 --tags`
+#VERSION=`git describe --abbrev=0 --tags`
+VERSION=$(git tag -l --sort -version:refname | head -1)
 
 #replace . with space so can split into an array
 VERSION_BITS=(${VERSION//./ })
