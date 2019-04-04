@@ -50,31 +50,9 @@
           git push origin feature/Jenkinsfile
           '''
         }
-
-        sshagent (credentials: ["denpal"]) {
-        	sh '''
-          git commit --allow-empty -m "test withCredentials"
-          git push origin feature/Jenkinsfile
-          '''
-        }
       }
     }
-    stage('Install dependencies') {
-      when { expression { return params.dependencies } }
-      steps {
-        sh """
-        echo disabled
-        """
-        }
-    }
-    stage('Pre-build tests') {
-      steps {
-        sh """
-        ls -al
-        """
-      }
-    }
-    stage('Docker-compose') {
+    stage('Docker Build') {
       steps {
         sh '''
         docker network ls
@@ -119,7 +97,7 @@
         """
       }
     }
-    stage('Debug Info') {
+    stage('Debug') {
       when { expression { return params.debug } }
       steps {
         sh """
@@ -136,21 +114,18 @@
         """
       }
     }
-    stage('Verification tests') {
+    stage('Verification') {
       steps {
-        sh """
+        sh '''
+        docker-compose exec -T cli drush status
         curl -v http://localhost:10000/
         curl -v http://localhost:10001/
-        docker-compose exec -T cli drush status
-        echo curl http://denpal.docker.amazee.io
-        """
-        /*
         if [ $? -eq 0 ]; then
           echo "OK!"
         else
           echo "FAIL"
         fi
-        */
+        '''
       }
     }
     stage('Tagging') {
@@ -167,11 +142,10 @@
         }
       }
     }
-    stage('Docker push images') {
+    stage('Docker Push') {
       steps {
         sh '''
         tag=$(git describe --abbrev=0 --tags)
-        echo $tag
 
         docker tag denpal:latest amazeeiodevelopment/denpal:latest
         docker tag denpal:latest amazeeiodevelopment/denpal:$tag
