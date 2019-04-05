@@ -11,6 +11,11 @@
     COMPOSE_PROJECT_NAME = 'denpal'
   }
   stages {
+    stage ('Checkout') {
+      def checkout = checkout scm
+      env.GIT_COMMIT = checkout["GIT_COMMIT"]
+      sh "git fetch --tags"
+    }
     stage('Docker login') {
       steps {
         sh """
