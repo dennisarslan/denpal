@@ -4,12 +4,7 @@
     buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
   }
   parameters {
-    booleanParam(name: 'dependencies', defaultValue: false, description: 'Should I install the Docker-in-Docker dependencies?')
     booleanParam(name: 'debug', defaultValue: false, description: 'Should I enable debug mode for verbose logging?')
-    booleanParam(name: 'testgit', defaultValue: false, description: 'Should I test the SSH private key for pushing into Git?')
-    booleanParam(name: 'cli', defaultValue: false, description: 'Should I rebuild the cli Docker image?')
-    booleanParam(name: 'nginx', defaultValue: false, description: 'Should I rebuild the nginx Docker image?')
-    booleanParam(name: 'php', defaultValue: false, description: 'Should I rebuild the php Docker image?')
   }
   environment {
     DOCKER_CREDS = credentials('amazeeiojenkins-dockerhub-password')
@@ -21,21 +16,6 @@
         sh """
         docker login --username amazeeiojenkins --password $DOCKER_CREDS
         """
-      }
-    }
-    stage('Test Git') {
-      when { expression { return params.testgit } }
-      steps {
-        /* sshagent(credentials : ['denpal']) { */
-        withCredentials([sshUserPrivateKey(credentialsId: 'denpal', keyFileVariable: 'KEY_FILE')]) {
-          sh '''
-          eval `ssh-agent -s`
-          ssh-add ${KEY_FILE}
-          ssh-add -L
-          git commit --allow-empty -m "test withCredentials"
-          git push origin feature/Jenkinsfile
-          '''
-        }
       }
     }
     stage('Docker Build') {
