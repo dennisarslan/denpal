@@ -31,6 +31,7 @@ if [ -z "$NEEDS_TAG" ]; then
     echo "Tagged with $NEW_TAG (Ignoring fatal:cannot describe - this means commit is untagged) "
     git tag $NEW_TAG
     git push --tags
+    git push
 else
     echo "Already a tag on this commit"
 fi

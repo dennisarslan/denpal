@@ -16,20 +16,6 @@
     COMPOSE_PROJECT_NAME = 'denpal'
   }
   stages {
-    stage('Git clone') {
-      /*
-      This is needed for local development, because Jenkins uses locally pasted pipeline code in a textarea box and doesn't know where the Git repo is.
-      This also means we have no multibranch, but that's no problem for local development.
-      */
-      steps {
-        git branch: 'feature/Jenkinsfile',
-          credentialsId: 'denpal',
-          url: 'git@github.com:dennisarslan/denpal.git'
-        /*
-        git url: 'github.com/dennisarslan/denpal', branch: 'feature/Jenkinsfile'
-        */
-      }
-    }
     stage('Docker login') {
       steps {
         sh """
@@ -57,43 +43,16 @@
         sh '''
         docker network ls
         docker-compose config -q
-        docker network prune -f && docker network inspect amazeeio-network >/dev/null || docker network create amazeeio-network
+        docker network inspect amazeeio-network >/dev/null || docker network create amazeeio-network
         COMPOSE_PROJECT_NAME=denpal docker-compose down
         COMPOSE_PROJECT_NAME=denpal docker-compose up -d --build "$@"
         '''
       }
     }
-    stage('Build Image: cli') {
-      when { expression { return params.cli } }
+    stage('Waiting 10 seconds') {
       steps {
         sh """
-        docker build -t dennisarslan/denpal-cli -f Dockerfile.cli .
-        docker push dennisarslan/denpal-cli
-        """
-      }
-    }
-    stage('Build Image: nginx') {
-      when { expression { return params.nginx } }
-      steps {
-        sh """
-        docker build -t dennisarslan/denpal-nginx -f Dockerfile.nginx --build-arg CLI_IMAGE=dennisarslan/denpal-cli .
-        docker push dennisarslan/denpal-nginx
-        """
-      }
-    }
-    stage('Build Image: php') {
-      when { expression { return params.php } }
-      steps {
-        sh """
-        docker build -t dennisarslan/denpal-php -f Dockerfile.php --build-arg CLI_IMAGE=dennisarslan/denpal-cli .
-        docker push dennisarslan/denpal-php
-        """
-      }
-    }
-    stage('Waiting 15 seconds') {
-      steps {
-        sh """
-        sleep 15s
+        sleep 10s
         """
       }
     }
@@ -118,28 +77,16 @@
       steps {
         sh '''
         docker-compose exec -T cli drush status
+        docker-compose exec -T cli curl http://nginx:8080 -v
         curl -v http://localhost:10000/
         curl -v http://localhost:10001/
         if [ $? -eq 0 ]; then
           echo "OK!"
         else
           echo "FAIL"
+          /bin/false
         fi
         '''
-      }
-    }
-    stage('Tagging') {
-      steps {
-        withCredentials([sshUserPrivateKey(credentialsId: 'denpal', keyFileVariable: 'KEY_FILE')]) {
-          sh '''
-          eval `ssh-agent -s`
-          ssh-add ${KEY_FILE}
-          ssh-add -L
-          git config --global user.name "Dennis Arslan (Jenkins)"
-          git config --global user.email "dennis.arslan@amazee.com"
-          ./archive/tag_git_repo.sh
-          '''
-        }
       }
     }
     stage('Docker Push') {
