@@ -72,6 +72,9 @@
       steps {
         sh '''
         tag=$(git describe --abbrev=0 --tags)
+        branch=$(git describe --all --contains --abbrev=4)
+        echo "Branch: "
+        echo $branch
 
         docker tag denpal:latest amazeeiodevelopment/denpal:latest
         docker tag denpal:latest amazeeiodevelopment/denpal:$tag
