@@ -34,8 +34,6 @@
     stage('Verification') {
       steps {
         sh '''
-        docker-compose ps
-        docker ps
         docker-compose exec -T cli drush status
         docker-compose exec -T cli curl http://nginx:8080 -v
         if [ $? -eq 0 ]; then
@@ -58,7 +56,7 @@
             echo docker tag denpal$variant amazeeiodevelopment/denpal$variant:$GIT_BRANCH
             echo docker push amazeeiodevelopment/denpal$variant:$GIT_BRANCH
 
-            if $GIT_BRANCH == "develop"; do
+            if [ $GIT_BRANCH == "develop" ]; do
               echo docker tag denpal$variant amazeeiodevelopment/denpal$variant:latest
               echodocker push amazeeiodevelopment/denpal$variant:$tag
             fi
