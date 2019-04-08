@@ -11,8 +11,6 @@
     stage('Docker login') {
       steps {
         sh '''
-        env
-        COMPOSE_PROJECT_NAME=denpal-19 docker-compose down
         docker login --username amazeeiojenkins --password $DOCKER_CREDS
         '''
       }
