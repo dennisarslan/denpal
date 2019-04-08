@@ -56,7 +56,7 @@
             echo docker tag denpal$variant amazeeiodevelopment/denpal$variant:$GIT_BRANCH
             echo docker push amazeeiodevelopment/denpal$variant:$GIT_BRANCH
 
-            if [ $GIT_BRANCH -eq "develop" ]; then
+            if [ $GIT_BRANCH == "develop" ]; then
               echo docker tag denpal$variant amazeeiodevelopment/denpal$variant:latest
               echodocker push amazeeiodevelopment/denpal$variant:$tag
             fi
