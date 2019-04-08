@@ -53,31 +53,15 @@
         docker images | head
 
         for variant in '' _nginx _php; do
-            echo docker tag denpal$variant amazeeiodevelopment/denpal$variant:$GIT_BRANCH
-            echo docker push amazeeiodevelopment/denpal$variant:$GIT_BRANCH
+            docker tag denpal$variant amazeeiodevelopment/denpal$variant:$GIT_BRANCH
+            docker push amazeeiodevelopment/denpal$variant:$GIT_BRANCH
 
             if [ $GIT_BRANCH = "develop" ]; then
-              echo docker tag denpal$variant amazeeiodevelopment/denpal$variant:latest
-              echo docker push amazeeiodevelopment/denpal$variant:latest
+              docker tag denpal$variant amazeeiodevelopment/denpal$variant:latest
+              docker push amazeeiodevelopment/denpal$variant:latest
             fi
 
         done
-
-        /bin/false
-        docker tag denpal:latest amazeeiodevelopment/denpal:latest
-        docker tag denpal:latest amazeeiodevelopment/denpal:$tag
-        docker push amazeeiodevelopment/denpal:latest
-        docker push amazeeiodevelopment/denpal:$tag
-
-        docker tag denpal_nginx:latest amazeeiodevelopment/denpal_nginx:latest
-        docker tag denpal_nginx:latest amazeeiodevelopment/denpal_nginx:$tag
-        docker push amazeeiodevelopment/denpal_nginx:latest
-        docker push amazeeiodevelopment/denpal_nginx:$tag
-
-        docker tag denpal_php:latest amazeeiodevelopment/denpal_php:latest
-        docker tag denpal_php:latest amazeeiodevelopment/denpal_php:$tag
-        docker push amazeeiodevelopment/denpal_php:latest
-        docker push amazeeiodevelopment/denpal_php:$tag
         '''
       }
     }
