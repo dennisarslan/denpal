@@ -12,6 +12,10 @@
       steps {
         sh '''
         env
+        COMPOSE_PROJECT_NAME=denpal docker-compose=down
+        COMPOSE_PROJECT_NAME=denpal-15 docker-compose=down
+        COMPOSE_PROJECT_NAME=denpal-16 docker-compose=down
+        COMPOSE_PROJECT_NAME=denpal-17 docker-compose=down
         docker login --username amazeeiojenkins --password $DOCKER_CREDS
         '''
       }
@@ -37,7 +41,6 @@
         sh '''
         docker-compose ps
         docker ps
-        export COMPOSE_PROJECT_NAME="denpal-${BUILD_ID}"
         docker-compose exec -T cli drush status
         docker-compose exec -T cli curl http://nginx:8080 -v
         curl -v http://localhost:10000/
@@ -48,13 +51,13 @@
           echo "FAIL"
           /bin/false
         fi
+        docker-compose down
         '''
       }
     }
     stage('Docker Push') {
       steps {
         sh '''
-        tag=$(git describe --abbrev=0 --tags)
         branch=$(git describe --all --contains --abbrev=4)
         echo "Branch: "
         echo $branch
