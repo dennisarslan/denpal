@@ -1,7 +1,10 @@
+  parameters {
     booleanParam(name: 'testgit', defaultValue: false, description: 'Should I test the SSH private key for pushing into Git?')
     booleanParam(name: 'cli', defaultValue: false, description: 'Should I rebuild the cli Docker image?')
     booleanParam(name: 'nginx', defaultValue: false, description: 'Should I rebuild the nginx Docker image?')
     booleanParam(name: 'php', defaultValue: false, description: 'Should I rebuild the php Docker image?')
+    booleanParam(name: 'debug', defaultValue: false, description: 'Should I enable debug mode for verbose logging?')
+  }
 
     stage('Test Git') {
       when { expression { return params.testgit } }
@@ -56,6 +59,23 @@
         sh """
         docker build -t dennisarslan/denpal-php -f Dockerfile.php --build-arg CLI_IMAGE=dennisarslan/denpal-cli .
         docker push dennisarslan/denpal-php
+        """
+      }
+    }
+    stage('Debug') {
+      when { expression { return params.debug } }
+      steps {
+        sh """
+        docker-compose ps
+        docker network list
+        docker ps | head
+        docker images | head
+        docker-compose ps
+        docker logs denpal_cli_1
+        docker logs denpal_mariadb_1
+        docker inspect denpal_php_1  | grep -i DB_
+        docker exec denpal_cli_1 mysql -hmariadb -udrupal -pdrupal
+        docker-compose logs
         """
       }
     }

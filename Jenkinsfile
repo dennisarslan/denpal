@@ -1,22 +1,17 @@
  pipeline {
   agent any
   options {
-    buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
-  }
-  parameters {
-    booleanParam(name: 'debug', defaultValue: false, description: 'Should I enable debug mode for verbose logging?')
+    buildDiscarder(logRotator(numToKeepStr: '10'))
   }
   environment {
     DOCKER_CREDS = credentials('amazeeiojenkins-dockerhub-password')
-    COMPOSE_PROJECT_NAME = 'denpal'
-    COMPOSE_PROJECT_NAMO = "denpal-${BUILD_ID}"
+    COMPOSE_PROJECT_NAME = "denpal-${BUILD_ID}"
   }
   stages {
     stage('Docker login') {
       steps {
         sh '''
         env
-        export COMPOSE_PROJECT_NAME="denpal-${BUILD_ID}"
         docker login --username amazeeiojenkins --password $DOCKER_CREDS
         '''
       }
@@ -24,11 +19,9 @@
     stage('Docker Build') {
       steps {
         sh '''
-        export COMPOSE_PROJECT_NAME="denpal-${BUILD_ID}"
         docker-compose config -q
-        docker network prune -f && docker network inspect amazeeio-network >/dev/null || docker network create amazeeio-network
-        COMPOSE_PROJECT_NAME=denpal docker-compose down
-        COMPOSE_PROJECT_NAME=denpal docker-compose up -d --build "$@"
+        docker-compose down
+        docker-compose up -d --build "$@"
         '''
       }
     }
@@ -36,24 +29,6 @@
       steps {
         sh """
         sleep 10s
-        """
-      }
-    }
-    stage('Debug') {
-      when { expression { return params.debug } }
-      steps {
-        sh """
-        export COMPOSE_PROJECT_NAME="denpal-${BUILD_ID}"
-        docker-compose ps
-        docker network list
-        docker ps | head
-        docker images | head
-        docker-compose ps
-        docker logs denpal_cli_1
-        docker logs denpal_mariadb_1
-        docker inspect denpal_php_1  | grep -i DB_
-        docker exec denpal_cli_1 mysql -hmariadb -udrupal -pdrupal
-        docker-compose logs
         """
       }
     }
