@@ -15,7 +15,7 @@
       steps {
         sh """
         env
-        export COMPOSE_PROJECT_NAME_TWO = '123'
+        export COMPOSE_PROJECT_NAMO="123"
         docker login --username amazeeiojenkins --password $DOCKER_CREDS
         """
       }
