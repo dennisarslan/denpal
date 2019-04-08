@@ -16,6 +16,7 @@
         sh """
         env
         export COMPOSE_PROJECT_NAME="123"
+        env
         docker login --username amazeeiojenkins --password $DOCKER_CREDS
         """
       }
