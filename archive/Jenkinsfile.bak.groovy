@@ -93,3 +93,11 @@
         }
       }
     }
+  post {
+    always {
+      script {
+        currentBuild.setDescription("CLI: ${params.cli} - NGINX: ${params.nginx} - PHP: ${params.php}")
+      }
+      echo 'I will always say Hello again!'
+    }
+  }

@@ -29,10 +29,10 @@
         '''
       }
     }
-    stage('Waiting 10 seconds') {
+    stage('Waiting 5 seconds') {
       steps {
         sh """
-        sleep 10s
+        sleep 5s
         """
       }
     }
@@ -78,14 +78,6 @@
         docker push amazeeiodevelopment/denpal_php:$tag
         '''
       }
-    }
-  }
-  post {
-    always {
-      script {
-        currentBuild.setDescription("CLI: ${params.cli} - NGINX: ${params.nginx} - PHP: ${params.php}")
-      }
-      echo 'I will always say Hello again!'
     }
   }
 }
