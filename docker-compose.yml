@@ -68,7 +68,7 @@ services:
       - amazeeio-network
       - default
     ports:
-      - 10000:8080
+      - 8080
 
   php:
     build:
@@ -87,7 +87,7 @@ services:
     environment:
       << : *default-environment # loads the defined environment variables from the top
     ports:
-      - 10002:9000
+      - 9000
 
   mariadb:
     image: amazeeio/mariadb-drupal
@@ -132,7 +132,7 @@ services:
       - amazeeio-network
       - default
     ports:
-      - 10001:8080
+      - 8080
 
 networks:
   amazeeio-network:
