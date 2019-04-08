@@ -24,7 +24,7 @@
         '''
       }
     }
-    stage('Waiting 5 seconds') {
+    stage('Waiting') {
       steps {
         sh """
         sleep 5s
@@ -56,7 +56,7 @@
             echo docker tag denpal$variant amazeeiodevelopment/denpal$variant:$GIT_BRANCH
             echo docker push amazeeiodevelopment/denpal$variant:$GIT_BRANCH
 
-            if [ $GIT_BRANCH == "develop" ]; do
+            if [ $GIT_BRANCH -eq "develop" ]; then
               echo docker tag denpal$variant amazeeiodevelopment/denpal$variant:latest
               echodocker push amazeeiodevelopment/denpal$variant:$tag
             fi
