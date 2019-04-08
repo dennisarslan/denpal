@@ -12,10 +12,7 @@
       steps {
         sh '''
         env
-        COMPOSE_PROJECT_NAME=denpal docker-compose down
-        COMPOSE_PROJECT_NAME=denpal-15 docker-compose down
-        COMPOSE_PROJECT_NAME=denpal-16 docker-compose down
-        COMPOSE_PROJECT_NAME=denpal-17 docker-compose down
+        COMPOSE_PROJECT_NAME=denpal-19 docker-compose down
         docker login --username amazeeiojenkins --password $DOCKER_CREDS
         '''
       }
@@ -59,6 +56,8 @@
         branch=$(git describe --all --contains --abbrev=4)
         echo "Branch: "
         echo $branch
+        docker images
+        /bin/false
 
         docker tag denpal:latest amazeeiodevelopment/denpal:latest
         docker tag denpal:latest amazeeiodevelopment/denpal:$tag
