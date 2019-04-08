@@ -35,6 +35,8 @@
     stage('Verification') {
       steps {
         sh '''
+        docker-compose ps
+        docker ps
         export COMPOSE_PROJECT_NAME="denpal-${BUILD_ID}"
         docker-compose exec -T cli drush status
         docker-compose exec -T cli curl http://nginx:8080 -v
