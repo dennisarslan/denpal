@@ -49,6 +49,7 @@
     stage('Docker Push') {
       steps {
         sh '''
+        #!/bin/bash
         echo "Branch: $GIT_BRANCH"
         docker images | head
 
@@ -58,7 +59,7 @@
 
             if [ $GIT_BRANCH == "develop" ]; then
               echo docker tag denpal$variant amazeeiodevelopment/denpal$variant:latest
-              echodocker push amazeeiodevelopment/denpal$variant:$tag
+              echo docker push amazeeiodevelopment/denpal$variant:latest
             fi
 
         done
