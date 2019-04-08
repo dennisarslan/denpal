@@ -50,6 +50,7 @@
       steps {
         sh '''
         #!/bin/bash
+        echo bash
         echo "Branch: $GIT_BRANCH"
         docker images | head
 
