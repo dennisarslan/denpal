@@ -12,10 +12,10 @@
       steps {
         sh '''
         env
-        COMPOSE_PROJECT_NAME=denpal docker-compose=down
-        COMPOSE_PROJECT_NAME=denpal-15 docker-compose=down
-        COMPOSE_PROJECT_NAME=denpal-16 docker-compose=down
-        COMPOSE_PROJECT_NAME=denpal-17 docker-compose=down
+        COMPOSE_PROJECT_NAME=denpal docker-compose down
+        COMPOSE_PROJECT_NAME=denpal-15 docker-compose down
+        COMPOSE_PROJECT_NAME=denpal-16 docker-compose down
+        COMPOSE_PROJECT_NAME=denpal-17 docker-compose down
         docker login --username amazeeiojenkins --password $DOCKER_CREDS
         '''
       }
