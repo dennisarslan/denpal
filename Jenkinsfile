@@ -8,12 +8,13 @@
   }
   environment {
     DOCKER_CREDS = credentials('amazeeiojenkins-dockerhub-password')
-    COMPOSE_PROJECT_NAME = 'denpal'
+    COMPOSE_PROJECT_NAME = 'denpal-'
   }
   stages {
     stage('Docker login') {
       steps {
         sh """
+        env
         docker login --username amazeeiojenkins --password $DOCKER_CREDS
         """
       }
