@@ -9,6 +9,7 @@
   environment {
     DOCKER_CREDS = credentials('amazeeiojenkins-dockerhub-password')
     COMPOSE_PROJECT_NAME = 'denpal'
+    env.COMPOSE_PROJECT_NAMO = 'denpal-${BUILD_ID}'
   }
   stages {
     stage('Docker login') {
@@ -16,7 +17,6 @@
         sh '''
         env
         export COMPOSE_PROJECT_NAME="denpal-${BUILD_ID}"
-        env
         docker login --username amazeeiojenkins --password $DOCKER_CREDS
         '''
       }
@@ -24,7 +24,7 @@
     stage('Docker Build') {
       steps {
         sh '''
-        env
+        export COMPOSE_PROJECT_NAME="denpal-${BUILD_ID}"
         docker-compose config -q
         docker network prune -f && docker network inspect amazeeio-network >/dev/null || docker network create amazeeio-network
         COMPOSE_PROJECT_NAME=denpal docker-compose down
@@ -43,6 +43,7 @@
       when { expression { return params.debug } }
       steps {
         sh """
+        export COMPOSE_PROJECT_NAME="denpal-${BUILD_ID}"
         docker-compose ps
         docker network list
         docker ps | head
@@ -59,6 +60,7 @@
     stage('Verification') {
       steps {
         sh '''
+        export COMPOSE_PROJECT_NAME="denpal-${BUILD_ID}"
         docker-compose exec -T cli drush status
         docker-compose exec -T cli curl http://nginx:8080 -v
         curl -v http://localhost:10000/
