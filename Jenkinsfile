@@ -15,6 +15,7 @@
       steps {
         sh """
         env
+        export COMPOSE_PROJECT_NAME_TWO = '123'
         docker login --username amazeeiojenkins --password $DOCKER_CREDS
         """
       }
@@ -22,6 +23,7 @@
     stage('Docker Build') {
       steps {
         sh '''
+        env
         docker-compose config -q
         docker network prune -f && docker network inspect amazeeio-network >/dev/null || docker network create amazeeio-network
         COMPOSE_PROJECT_NAME=denpal docker-compose down
