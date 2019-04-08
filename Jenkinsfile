@@ -13,12 +13,12 @@
   stages {
     stage('Docker login') {
       steps {
-        sh """
+        sh '''
         env
-        export COMPOSE_PROJECT_NAME = 'denpal-${BUILD_ID}'
+        export COMPOSE_PROJECT_NAME="denpal-${BUILD_ID}"
         env
         docker login --username amazeeiojenkins --password $DOCKER_CREDS
-        """
+        '''
       }
     }
     stage('Docker Build') {
