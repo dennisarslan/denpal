@@ -51,12 +51,21 @@
     stage('Docker Push') {
       steps {
         sh '''
-        branch=$(git describe --all --contains --abbrev=4)
-        echo "Branch: "
-        echo $branch
-        docker images
-        /bin/false
+        echo "Branch: $GIT_BRANCH"
+        docker images | head
 
+        for variant in '' _nginx _php; do
+            echo docker tag denpal$variant amazeeiodevelopment/denpal$variant:$GIT_BRANCH
+            echo docker push amazeeiodevelopment/denpal$variant:$GIT_BRANCH
+
+            if $GIT_BRANCH == "develop"; do
+              echo docker tag denpal$variant amazeeiodevelopment/denpal$variant:latest
+              echodocker push amazeeiodevelopment/denpal$variant:$tag
+            fi
+
+        done
+
+        /bin/false
         docker tag denpal:latest amazeeiodevelopment/denpal:latest
         docker tag denpal:latest amazeeiodevelopment/denpal:$tag
         docker push amazeeiodevelopment/denpal:latest
