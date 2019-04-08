@@ -43,8 +43,6 @@
         docker ps
         docker-compose exec -T cli drush status
         docker-compose exec -T cli curl http://nginx:8080 -v
-        curl -v http://localhost:10000/
-        curl -v http://localhost:10001/
         if [ $? -eq 0 ]; then
           echo "OK!"
         else
