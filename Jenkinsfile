@@ -34,17 +34,23 @@
     }
     stage('Verification') {
       steps {
-        sh '''
-        docker-compose exec -T cli drush status
-        docker-compose exec -T cli curl http://nginx:8080 -v
-        if [ $? -eq 0 ]; then
-          echo "OK!"
-        else
-          echo "FAIL"
-          /bin/false
-        fi
-        docker-compose down
-        '''
+        try {
+          sh '''
+          docker-compose exec -T cli drush status
+          docker-compose exec -T cli curl http://nginx:8080 -v
+          if [ $? -eq 0 ]; then
+            echo "OK!"
+          else
+            echo "FAIL"
+            /bin/false
+          fi
+          docker-compose down
+          '''
+        }
+        catch (e) {
+          sh 'docker-compose down'
+          throw e
+        }
       }
     }
     stage('Docker Push') {
