@@ -33,8 +33,8 @@
       }
     }
     stage('Verification') {
-      steps {
-        try {
+      try {
+        steps {
           sh '''
           docker-compose exec -T cli drush status
           docker-compose exec -T cli curl http://nginx:8080 -v
@@ -47,10 +47,10 @@
           docker-compose down
           '''
         }
-        catch (e) {
+      }
+      catch (e) {
           sh 'docker-compose down'
           throw e
-        }
       }
     }
     stage('Docker Push') {
