@@ -36,6 +36,7 @@
       steps {
         try {
           script {
+            sh '''
             docker-compose exec -T cli drush status
             docker-compose exec -T cli curl http://nginx:8080 -v
             if [ $? -eq 0 ]; then
@@ -45,6 +46,7 @@
               /bin/false
             fi
             docker-compose down
+            '''
           }
         }
         catch (e) {
